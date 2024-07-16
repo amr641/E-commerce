@@ -1,0 +1,44 @@
+import slugify from "slugify";
+import { catchError } from "../middlewares/catchErrors.js";
+import Category from "../models/categoryModel.js";
+import showNotFound from "../../utils/notFoundErrors.js";
+
+// add category
+const addCategory = catchError(async (req, res) => {
+  req.body.slug = slugify(req.body.name);
+  let category = await Category.create(req.body);
+  res.status(201).json({ message: "success", category });
+});
+// all categories
+const getAllCategories = catchError(async (req, res) => {
+  let categories = await Category.find();
+  res.status(200).json({ message: "success", categories });
+});
+// get single category
+const getCategory = catchError(async (req, res, next) => {
+  let category = await Category.findById(req.params.id);
+  if (!category) return showNotFound(next, "category");
+  res.status(200).json({ message: "success", category });
+});
+// update category
+const updateCategory = catchError(async (req, res, next) => {
+  req.body.slug = slugify(req.body.name);
+  let category = await Category.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
+  category || showNotFound(next, "category");
+  !category || res.status(200).json({ message: "success", category });
+});
+// delete category
+const deleteCategory = catchError(async (req, res, next) => {
+  let category = await Category.findByIdAndDelete(req.params.id);
+  category || showNotFound(next, "category");
+  !category || res.status(200).json({ message: "success", category });
+});
+export {
+  addCategory,
+  getAllCategories,
+  getCategory,
+  updateCategory,
+  deleteCategory,
+};
