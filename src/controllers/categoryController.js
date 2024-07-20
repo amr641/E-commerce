@@ -19,8 +19,8 @@ const getAllCategories = catchError(async (req, res) => {
 // get single category
 const getCategory = catchError(async (req, res, next) => {
   let category = await Category.findById(req.params.id);
-  if (!category) return showNotFound(next, "category");
-  res.status(200).json({ message: "success", category });
+   category || showNotFound(next, "category");
+  !category || res.status(200).json({ message: "success", category })
 });
 // update category
 const updateCategory = catchError(async (req, res, next) => {
