@@ -6,13 +6,19 @@ import SubCategory from "../models/subCategoryModel.js";
 
 // add sub category
 const addSubCategory = catchError(async (req, res) => {
+  console.log(req.body);
   req.body.slug = slugify(req.body.name);
   let subCategory = await SubCategory.create(req.body);
   res.status(201).json({ message: "success", subCategory });
 });
 // allsub categories
 const getAllSubCategories = catchError(async (req, res) => {
-  let subCategories = await SubCategory.find();
+  let filter = () => {
+    if (req.params.category) return { category: req.params.category };
+    return {};
+  };
+  let subCategories = await SubCategory.find(filter());
+
   res.status(200).json({ message: "success", subCategories });
 });
 // get single subcategory

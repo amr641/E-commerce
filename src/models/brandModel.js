@@ -21,5 +21,9 @@ const brandSchema = new Schema(
   },
   { versionKey: false, timestamps: false }
 );
+brandSchema.post("init", function (doc) {
+  let str = "http://localhost:3000/uploads/brands/";
+  doc.img = str + doc.img;
+});
 const Brand = model("Brand", brandSchema);
 export default Brand;

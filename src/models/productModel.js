@@ -2,7 +2,7 @@ import { Schema, Types, model } from "mongoose";
 
 const productSchema = new Schema(
   {
-    name: {
+    title: {
       type: String,
       trim: true,
       required: true,
@@ -16,7 +16,7 @@ const productSchema = new Schema(
     desc: {
       type: String,
       required: true,
-      minLength: [30, "too short description"],
+      minLength: [10, "too short description"],
       maxLength: 1000,
     },
     imageCover: String,
@@ -57,5 +57,11 @@ const productSchema = new Schema(
 
   { versionKey: false, timestamps: false }
 );
+productSchema.post("init", function (doc) {
+  let url = "http://localhost:3000/uploads/products/";
+  doc.imageCover = url + doc.img;
+  doc.images = doc.images.map((image) => url + image);
+});
 const Product = model("Product", productSchema);
-export default Category;
+
+export default Product;

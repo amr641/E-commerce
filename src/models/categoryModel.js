@@ -13,7 +13,7 @@ const categorySchema = new Schema(
       lowercase: true,
       unique: [true, "slug must be unique"],
     },
-    img: String,
+    image: String,
     createdBy: {
       type: Types.ObjectId,
       ref: "User",
@@ -21,5 +21,9 @@ const categorySchema = new Schema(
   },
   { versionKey: false, timestamps: false }
 );
+categorySchema.post("init", function (doc) {
+  let str = "http://localhost:3000/uploads/categories/";
+  doc.image = str + doc.image;
+});
 const Category = model("Category", categorySchema);
 export default Category;

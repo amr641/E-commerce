@@ -4,11 +4,11 @@ import validate from "../middlewares/validate.js";
 import * as sv from "../../utils/validators/subcategoryValidator.js";
 import * as auth from "../middlewares/authMiddleware.js";
 
-const router = Router();
+const router = Router({ mergeParams: true });
 router
   .post(
     "/",
-    validate(sv.addsubCategoryValidation),
+    // validate(sv.addsubCategoryValidation),
     auth.categoryExistence,
     sc.addSubCategory
   )

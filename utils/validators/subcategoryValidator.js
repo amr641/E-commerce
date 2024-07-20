@@ -2,9 +2,7 @@ import joi from "joi";
 const addsubCategoryValidation = joi.object({
   name: joi.string().min(13).required(),
   slug: joi.string(),
-  image: joi.string(),
-  category: joi.string().hex(),
-  createdBy: joi.string().hex(),
+  category: joi.string().hex().min(24).required(),
 });
 const getSubCategoryVal = joi.object({
   id: joi.string().hex().required(),
