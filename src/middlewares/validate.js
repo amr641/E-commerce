@@ -1,20 +1,12 @@
-import { AppError } from "../../utils/appError.js";
+import { AppError } from '../../utils/appError.js';
 
-const validate = (schema) => {
+const validate = schema => {
   return (req, res, next) => {
-    let files = () => {
-      if (req.file) {
-        let object = { [`${req.file.fieldname}`]: req.file };
-        return object;
-      }
-      if (req.files) {
-        let object1 = { images: req.files };
-        const objectValues = Object.values(object1);
-        for (const value of objectValues) {
-          return value;
-        }
-      }
-    };
+    let files = () =>
+      req.files
+        ? { files: req.files }
+        : { [`${req.file.fieldname}`]: req.file };
+
     const { error } = schema.validate(
       {
         ...req.body,
@@ -25,7 +17,7 @@ const validate = (schema) => {
       { abortEarly: false }
     );
     if (!error) return next();
-    const errors = error?.details.map((ele) => ele.message);
+    const errors = error?.details.map(ele => ele.message);
     next(new AppError(errors, 403));
   };
 };

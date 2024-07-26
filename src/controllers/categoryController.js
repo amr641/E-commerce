@@ -3,6 +3,7 @@ import { catchError } from "../middlewares/catchErrors.js";
 import Category from "../models/categoryModel.js";
 import showNotFound from "../../utils/notFoundErrors.js";
 import { removeOldImage } from "../../utils/removeOldImg.js";
+import { ApiFeatuers } from "../../utils/apiFeatures.js";
 // add category
 const addCategory = catchError(async (req, res) => {
   // console.log(req.file);
@@ -13,21 +14,23 @@ const addCategory = catchError(async (req, res) => {
 });
 // all categories
 const getAllCategories = catchError(async (req, res) => {
-  let categories = await Category.find();
-  res.status(200).json({ message: "success", categories });
+  let apiFeatuers= new ApiFeatuers(Category.find(),req.query).sort().select().filter().search()
+  let {page,limit}= apiFeatuers
+  let categories = await apiFeatuers.mongooseQuery;
+  res.status(200).json({ message: "success",page,limit, categories });
 });
 // get single category
 const getCategory = catchError(async (req, res, next) => {
   let category = await Category.findById(req.params.id);
-   category || showNotFound(next, "category");
-  !category || res.status(200).json({ message: "success", category })
+  category || showNotFound(next, "category");
+  !category || res.status(200).json({ message: "success", category });
 });
 // update category
 const updateCategory = catchError(async (req, res, next) => {
   if (req.file) req.body.img = req.file.filename;
   if (req.body.name) req.body.slug = slugify(req.body.name);
   let category = await Category.findByIdAndUpdate(req.params.id, req.body);
-  if (category.img) removeOldImage(category.img);
+  if (req.body.image) removeOldImage(category.image);
 
   category || showNotFound(next, "category");
   !category || res.status(200).json({ message: "success", category });

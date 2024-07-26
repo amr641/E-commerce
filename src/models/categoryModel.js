@@ -22,8 +22,8 @@ const categorySchema = new Schema(
   { versionKey: false, timestamps: false }
 );
 categorySchema.post("init", function (doc) {
-  let str = "http://localhost:3000/uploads/categories/";
-  doc.image = str + doc.image;
+  let url = "http://localhost:3000/uploads/categories/";
+  if(doc.image) doc.image = url + doc.image;
 });
 const Category = model("Category", categorySchema);
 export default Category;

@@ -3,9 +3,11 @@ import { catchError } from "../middlewares/catchErrors.js";
 import Brand from "../models/brandModel.js";
 import showNotFound from "../../utils/notFoundErrors.js";
 import { removeOldImage } from "../../utils/removeOldImg.js";
+import { ApiFeatuers } from "../../utils/apiFeatures.js";
 
 // add category
 const addBrand = catchError(async (req, res) => {
+  
   req.body.logo = req.file.filename;
   req.body.slug = slugify(req.body.name);
   let brand = await Brand.create(req.body);
@@ -13,8 +15,10 @@ const addBrand = catchError(async (req, res) => {
 });
 // all categories
 const getAllBrands = catchError(async (req, res) => {
-  let brands = await Brand.find();
-  res.status(200).json({ message: "success", brands });
+  let apiFeatuers= new ApiFeatuers(Brand.find(),req.query).pagination().sort().select().filter().search()
+  let {page,limit}= apiFeatuers
+  let brands = await apiFeatuers.mongooseQuery;
+  res.status(200).json({ message: "success",page,limit, brands });
 });
 // get single Brand
 const getBrand = catchError(async (req, res, next) => {

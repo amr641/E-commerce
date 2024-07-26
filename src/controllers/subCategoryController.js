@@ -3,6 +3,7 @@ import { catchError } from "../middlewares/catchErrors.js";
 
 import showNotFound from "../../utils/notFoundErrors.js";
 import SubCategory from "../models/subCategoryModel.js";
+import { ApiFeatuers } from "../../utils/apiFeatures.js";
 
 // add sub category
 const addSubCategory = catchError(async (req, res) => {
@@ -17,9 +18,12 @@ const getAllSubCategories = catchError(async (req, res) => {
     if (req.params.category) return { category: req.params.category };
     return {};
   };
-  let subCategories = await SubCategory.find(filter());
+  let apiFeatuers= new ApiFeatuers(SubCategory.find(filter()),req.query).pagination().sort().select().filter().search()
+  let {page,limit}= apiFeatuers
+  let subCategories = await apiFeatuers.mongooseQuery.populate('category');
+ 
 
-  res.status(200).json({ message: "success", subCategories });
+  res.status(200).json({ message: "success", page,limit,subCategories });
 });
 // get single subcategory
 const getSubCategory = catchError(async (req, res, next) => {

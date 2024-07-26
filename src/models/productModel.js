@@ -1,4 +1,4 @@
-import { Schema, Types, model } from "mongoose";
+import { Schema, Types, model } from 'mongoose';
 
 const productSchema = new Schema(
   {
@@ -6,7 +6,7 @@ const productSchema = new Schema(
       type: String,
       trim: true,
       required: true,
-      minLength: [true, "too short category name"],
+      minLength: [true, 'too short category name'],
     },
     slug: {
       type: String,
@@ -16,7 +16,7 @@ const productSchema = new Schema(
     desc: {
       type: String,
       required: true,
-      minLength: [10, "too short description"],
+      minLength: [10, 'too short description'],
       maxLength: 1000,
     },
     imageCover: String,
@@ -37,15 +37,15 @@ const productSchema = new Schema(
     },
     category: {
       type: Types.ObjectId,
-      ref: "Category",
+      ref: 'Category',
     },
     subcategory: {
       type: Types.ObjectId,
-      ref: "SubCategory",
+      ref: 'SubCategory',
     },
     brand: {
       type: Types.ObjectId,
-      ref: "Brand",
+      ref: 'Brand',
     },
     rateAvg: {
       type: Number,
@@ -57,11 +57,11 @@ const productSchema = new Schema(
 
   { versionKey: false, timestamps: false }
 );
-productSchema.post("init", function (doc) {
-  let url = "http://localhost:3000/uploads/products/";
-  doc.imageCover = url + doc.img;
-  doc.images = doc.images.map((image) => url + image);
+productSchema.post('init', function (doc) {
+  let url = 'http://localhost:3000/uploads/products/';
+ if(doc.imageCover) doc.imageCover = url + doc.imageCover;
+  doc.images = doc.images?.map(image => url + image);
 });
-const Product = model("Product", productSchema);
+const Product = model('Product', productSchema);
 
 export default Product;

@@ -1,4 +1,4 @@
-import joi from "joi";
+import joi from 'joi';
 // import joiObjectId from "joi-objectid";
 // const JoiObjectId = joiObjectId(joi);
 
@@ -12,7 +12,7 @@ const addBrandVal = joi.object({
       encoding: joi.string().required(),
       mimetype: joi
         .string()
-        .valid("image/jpeg", "image/png", "image/jpg", "image/jif")
+        .valid('image/jpeg', 'image/png', 'image/jpg', 'image/jif')
         .required(),
 
       size: joi.number().max(5242880).required(),

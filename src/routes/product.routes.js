@@ -17,11 +17,19 @@ router
     // auth.categoryExistence,
     pc.addProduct
   )
-  .get("/", pc.getAllProducts)
+  .get(
+    "/",
+    //  validate(pv.getAllProductsVal),
+    pc.getAllProducts
+  )
   .get("/:id", validate(pv.getProductVal), pc.getProduct)
   .patch(
     "/:id",
-    //   validate(pv.updateProductVal),
+    uploadMixOfFiles("products", [
+      { name: "imageCover", maxCount: 1 },
+      { name: "images", maxCount: 6 },
+    ]),
+    validate(pv.updateProductVal),
     pc.updateProduct
   )
   .delete("/:id", validate(pv.deleteProductVal), pc.deleteProduct);
