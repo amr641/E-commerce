@@ -31,7 +31,6 @@ const getProduct = catchError(async (req, res, next) => {
 // update product
 const updateProduct = catchError(async (req, res, next) => {
   const product = await Product.findByIdAndUpdate(req.params.id, req.body);
-  if (!product) return showNotFound(next, 'product');
   if (req.files) {
     if (req.files.imageCover) removeOldImage(product.imageCover);
     else if (req.files.images) {

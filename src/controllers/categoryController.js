@@ -16,6 +16,7 @@ const addCategory = catchError(async (req, res) => {
 const getAllCategories = catchError(async (req, res) => {
   let apiFeatuers= new ApiFeatuers(Category.find(),req.query).sort().select().filter().search()
   let {page,limit}= apiFeatuers
+
   let categories = await apiFeatuers.mongooseQuery;
   res.status(200).json({ message: "success",page,limit, categories });
 });
@@ -31,8 +32,6 @@ const updateCategory = catchError(async (req, res, next) => {
   if (req.body.name) req.body.slug = slugify(req.body.name);
   let category = await Category.findByIdAndUpdate(req.params.id, req.body);
   if (req.body.image) removeOldImage(category.image);
-
-  category || showNotFound(next, "category");
   !category || res.status(200).json({ message: "success", category });
 });
 // delete category

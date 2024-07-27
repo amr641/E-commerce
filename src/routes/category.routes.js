@@ -4,6 +4,7 @@ import validate from "../middlewares/validate.js";
 import * as cv from "../../utils/validators/categoryValidator.js";
 import subCategoryRouter from "./subCategory.routes.js";
 import { uploadSingleFile } from "../fileUpload/fileUpload.js";
+import * as auth from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
@@ -19,6 +20,7 @@ router
   .get("/:id", validate(cv.getCategoryVal), cc.getCategory)
   .patch(
     "/:id",
+   auth.categoryExistence,
     uploadSingleFile("categories", "image"),
     validate(cv.updateCategoryVal),
     cc.updateCategory

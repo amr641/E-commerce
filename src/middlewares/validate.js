@@ -2,11 +2,11 @@ import { AppError } from '../../utils/appError.js';
 
 const validate = schema => {
   return (req, res, next) => {
-    let files = () =>
-      req.files
-        ? { files: req.files }
-        : { [`${req.file.fieldname}`]: req.file };
-
+    let files = () =>{
+    if(req.files)return { files: req.files }
+       
+       if(req.file) return{[`${req.file?.fieldname}`]: req.file };
+    }
     const { error } = schema.validate(
       {
         ...req.body,

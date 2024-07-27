@@ -25,6 +25,7 @@ router
   .get("/:id", validate(pv.getProductVal), pc.getProduct)
   .patch(
     "/:id",
+    auth.productExistence,
     uploadMixOfFiles("products", [
       { name: "imageCover", maxCount: 1 },
       { name: "images", maxCount: 6 },
