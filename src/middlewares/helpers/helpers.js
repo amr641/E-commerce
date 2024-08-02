@@ -1,11 +1,11 @@
-import showNotFound from '../../utils/notFoundErrors.js';
-import Brand from '../models/brandModel.js';
-import Category from '../models/categoryModel.js';
-import Product from '../models/productModel.js';
-import { catchError } from './catchErrors.js';
+import showNotFound from '../../../utils/notFoundErrors.js';
+import Brand from '../../models/brandModel.js';
+import Category from '../../models/categoryModel.js';
+import Product from '../../models/productModel.js';
+import { catchError } from '../catchErrors.js';
 
 const categoryExistence = catchError(async (req, res, next) => {
-  const category = await Category.findById(req.body.category||req.params.id);
+  const category = await Category.findById(req.body.category || req.params.id);
   category || showNotFound(next, 'category');
   !category || next();
 });
@@ -19,4 +19,7 @@ const brandExistence = catchError(async (req, res, next) => {
   brand || showNotFound(next, 'brand');
   !brand || next();
 });
-export { categoryExistence, productExistence ,brandExistence};
+
+
+// --------------------------------------------
+export { categoryExistence, productExistence, brandExistence };

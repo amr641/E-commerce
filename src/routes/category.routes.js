@@ -1,29 +1,49 @@
-import { Router } from "express";
-import * as cc from "../controllers/categoryController.js";
-import validate from "../middlewares/validate.js";
-import * as cv from "../../utils/validators/categoryValidator.js";
-import subCategoryRouter from "./subCategory.routes.js";
-import { uploadSingleFile } from "../fileUpload/fileUpload.js";
-import * as auth from "../middlewares/authMiddleware.js";
+import { Router } from 'express';
+import * as cc from '../controllers/categoryController.js';
+import validate from '../middlewares/validate.js';
+import * as cv from '../../utils/validators/categoryValidator.js';
+import subCategoryRouter from './subCategory.routes.js';
+import { uploadSingleFile } from '../fileUpload/fileUpload.js';
+import { categoryExistence } from '../middlewares/helpers/helpers.js';
+import {
+  allowedTo,
+  protectRoutes,
+} from '../middlewares/auth/auth.controller.js';
+import { verfifyToken } from '../middlewares/verifiyToken.js';
+import { roles } from '../../utils/roles.js';
 
 const router = Router();
 
 router
-  .use("/:category/subCategories", subCategoryRouter)
+  .use(verfifyToken)
+  .use(protectRoutes)
+  .use('/:category/subCategories', subCategoryRouter)
   .post(
-    "/",
-    uploadSingleFile("categories", "image"),
+    '/',
+
+    uploadSingleFile('categories', 'image'),
     validate(cv.addCategoryValidation),
     cc.addCategory
   )
-  .get("/", cc.getAllCategories)
-  .get("/:id", validate(cv.getCategoryVal), cc.getCategory)
+  .get('/', cc.getAllCategories)
+  .get(
+    '/:id',
+    allowedTo(roles.USER, roles.ADMIN),
+    validate(cv.getCategoryVal),
+    cc.getCategory
+  )
   .patch(
-    "/:id",
-   auth.categoryExistence,
-    uploadSingleFile("categories", "image"),
+    '/:id',
+    allowedTo(roles.USER, roles.ADMIN),
+    categoryExistence,
+    uploadSingleFile('categories', 'image'),
     validate(cv.updateCategoryVal),
     cc.updateCategory
   )
-  .delete("/:id", validate(cv.deleteCategoryVal), cc.deleteCategory);
+  .delete(
+    '/:id',
+    allowedTo(roles.MANAGER),
+    validate(cv.deleteCategoryVal),
+    cc.deleteCategory
+  );
 export default router;

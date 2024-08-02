@@ -45,7 +45,6 @@ const updateCategoryVal = joi.object({
       filename: joi.string().required(),
       path: joi.string().required(),
     })
-    .required(),
 });
 const deleteCategoryVal = joi.object({
   id: joi.string().hex().required(),

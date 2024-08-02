@@ -1,11 +1,10 @@
 import jwt from "jsonwebtoken";
-import { appError } from "../utils/appError.js";
-import { secretKey } from "./auth.js";
+import { AppError } from "../../utils/appError.js";
 export const verfifyToken = async (req, res, next) => {
   const { token } = req.headers;
-  jwt.verify(token, secretKey, (err, decoded) => {
-    if (err) return next(new appError("inavlid token", 401));
+  jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+    if (err) return next(new AppError("inavlid token", 401));
     req.user = decoded;
     next();
   });
-};
+};  

@@ -1,37 +1,53 @@
-import { Router } from "express";
-import * as pc from "../controllers/productController.js";
-import validate from "../middlewares/validate.js";
-import * as pv from "../../utils/validators/productValidator.js";
-import * as auth from "../middlewares/authMiddleware.js";
-import { uploadMixOfFiles } from "../fileUpload/fileUpload.js";
+import { Router } from 'express';
+import * as pc from '../controllers/productController.js';
+import validate from '../middlewares/validate.js';
+import * as pv from '../../utils/validators/productValidator.js';
+
+import { uploadMixOfFiles } from '../fileUpload/fileUpload.js';
+import { productExistence } from '../middlewares/helpers/helpers.js';
+import {
+  allowedTo,
+  protectRoutes,
+} from '../middlewares/auth/auth.controller.js';
+import { roles } from '../../utils/roles.js';
+import { verfifyToken } from '../middlewares/verifiyToken.js';
 
 const router = Router();
 router
+  .use(verfifyToken)
+  .use(protectRoutes)
   .post(
-    "/",
-    uploadMixOfFiles("products", [
-      { name: "imageCover", maxCount: 1 },
-      { name: "images", maxCount: 6 },
+    '/',
+    allowedTo(roles.USER),
+    uploadMixOfFiles('products', [
+      { name: 'imageCover', maxCount: 1 },
+      { name: 'images', maxCount: 6 },
     ]),
     validate(pv.addProductVal),
     // auth.categoryExistence,
     pc.addProduct
   )
   .get(
-    "/",
+    '/',
     //  validate(pv.getAllProductsVal),
     pc.getAllProducts
   )
-  .get("/:id", validate(pv.getProductVal), pc.getProduct)
+  .get('/:id', validate(pv.getProductVal), pc.getProduct)
   .patch(
-    "/:id",
-    auth.productExistence,
-    uploadMixOfFiles("products", [
-      { name: "imageCover", maxCount: 1 },
-      { name: "images", maxCount: 6 },
+    '/:id',
+    allowedTo(roles.USER),
+    productExistence,
+    uploadMixOfFiles('products', [
+      { name: 'imageCover', maxCount: 1 },
+      { name: 'images', maxCount: 6 },
     ]),
     validate(pv.updateProductVal),
     pc.updateProduct
   )
-  .delete("/:id", validate(pv.deleteProductVal), pc.deleteProduct);
+  .delete(
+    '/:id',
+    allowedTo(roles.ADMIN),
+    validate(pv.deleteProductVal),
+    pc.deleteProduct
+  );
 export default router;

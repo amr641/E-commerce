@@ -3,9 +3,10 @@ import { catchError } from '../middlewares/catchErrors.js';
 import Product from '../models/productModel.js';
 import showNotFound from '../../utils/notFoundErrors.js';
 import fs from 'fs';
-import { removeOldImage } from '../../utils/removeOldImg.js';
+import { removeOldImage, removeOldImages } from '../../utils/removeOldImg.js';
 import { AppError } from '../../utils/appError.js';
 import { ApiFeatuers } from '../../utils/apiFeatures.js';
+// import path from 'path';
 
 // add product
 const addProduct = catchError(async (req, res) => {
@@ -16,11 +17,15 @@ const addProduct = catchError(async (req, res) => {
   res.status(201).json({ message: 'success', product });
 });
 // all products
-const getAllProducts = catchError(async (req, res) => {;
- let apiFeatuers =new ApiFeatuers(Product.find(),req.query).pagination().select().filter().sort().search()
- let {page,limit}= apiFeatuers
+const getAllProducts = catchError(async (req, res) => {
+  let apiFeatuers = new ApiFeatuers(Product.find(), req.query)
+    .select()
+    .filter()
+    .sort()
+    .search();
+  let { page, limit } = apiFeatuers;
   let products = await apiFeatuers.mongooseQuery;
-  res.status(200).json({ message: 'success',page,limit, products });
+  res.status(200).json({ message: 'success', page, limit, products });
 });
 // get single product
 const getProduct = catchError(async (req, res, next) => {
@@ -32,18 +37,28 @@ const getProduct = catchError(async (req, res, next) => {
 const updateProduct = catchError(async (req, res, next) => {
   const product = await Product.findByIdAndUpdate(req.params.id, req.body);
   if (req.files) {
-    if (req.files.imageCover) removeOldImage(product.imageCover);
-    else if (req.files.images) {
+    if (req.files.imageCover) {
+      removeOldImage(product)
+      req.body.imageCover = req.files.imageCover[0].filename;
+    }
+    if (req.files.images) {
       let imagesLength = req.files.images.length;
+      console.log(imagesLength);
       for (let i = 0; i < imagesLength; i++) {
         let startIndex = product.images[i].indexOf('up');
         let oldImagePath = product.images[i].slice(startIndex);
+        req.body.images =req.files.images.map(ele=>ele.filename)
         if (fs.existsSync(oldImagePath)) {
           fs.unlinkSync(oldImagePath);
         } else {
           return next(new AppError('file does not exist', 409));
         }
       }
+      //     let imagesFilePath = product.images.map((ele) => ele.split('/')[5])
+      //     imagesFilePath = imagesFilePath.map((ele) => path.join('uploads', 'products', `${ele}`))
+      //     imagesFilePath.map(ele => fs.unlinkSync(ele))
+      //     req.body.images = req.files.images.map(ele => ele.filename)
+      // }
     }
   }
   res.status(201).json({ message: 'success' });

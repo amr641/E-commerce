@@ -4,6 +4,7 @@ import Category from "../models/categoryModel.js";
 import showNotFound from "../../utils/notFoundErrors.js";
 import { removeOldImage } from "../../utils/removeOldImg.js";
 import { ApiFeatuers } from "../../utils/apiFeatures.js";
+
 // add category
 const addCategory = catchError(async (req, res) => {
   // console.log(req.file);
@@ -14,9 +15,8 @@ const addCategory = catchError(async (req, res) => {
 });
 // all categories
 const getAllCategories = catchError(async (req, res) => {
-  let apiFeatuers= new ApiFeatuers(Category.find(),req.query).sort().select().filter().search()
+  let apiFeatuers= new ApiFeatuers(Category.find(),req.query).sort().select().filter().search().pagination()
   let {page,limit}= apiFeatuers
-
   let categories = await apiFeatuers.mongooseQuery;
   res.status(200).json({ message: "success",page,limit, categories });
 });
