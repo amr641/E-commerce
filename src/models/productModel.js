@@ -55,11 +55,20 @@ const productSchema = new Schema(
     rateCount: Number,
   },
 
-  { versionKey: false, timestamps: false }
+  { versionKey: false, timestamps: false ,toJSON:{virtuals:true}}
 );
+productSchema.virtual('reviews', {
+  localField: '_id',
+  ref: 'Review',
+  // refer to product field in reviews model
+  foreignField: 'product',
+});
+productSchema.pre(/^find/,function(){
+  this.populate('reviews')
+})
 productSchema.post('init', function (doc) {
   let url = 'http://localhost:3000/uploads/products/';
- if(doc.imageCover) doc.imageCover = url + doc.imageCover;
+  if (doc.imageCover) doc.imageCover = url + doc.imageCover;
   doc.images = doc.images?.map(image => url + image);
 });
 const Product = model('Product', productSchema);

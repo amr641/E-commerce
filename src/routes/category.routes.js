@@ -15,9 +15,7 @@ import { roles } from '../../utils/roles.js';
 const router = Router();
 
 router
-  .use(verfifyToken)
-  .use(protectRoutes)
-  .use('/:category/subCategories', subCategoryRouter)
+  .use('/:category/subCategories',verfifyToken,protectRoutes, subCategoryRouter)
   .post(
     '/',
 
@@ -28,12 +26,14 @@ router
   .get('/', cc.getAllCategories)
   .get(
     '/:id',
+    verfifyToken,protectRoutes,
     allowedTo(roles.USER, roles.ADMIN),
     validate(cv.getCategoryVal),
     cc.getCategory
   )
   .patch(
     '/:id',
+    verfifyToken,protectRoutes,
     allowedTo(roles.USER, roles.ADMIN),
     categoryExistence,
     uploadSingleFile('categories', 'image'),
@@ -42,6 +42,7 @@ router
   )
   .delete(
     '/:id',
+    verfifyToken,protectRoutes,
     allowedTo(roles.MANAGER),
     validate(cv.deleteCategoryVal),
     cc.deleteCategory

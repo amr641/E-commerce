@@ -49,6 +49,7 @@ const changeUserPassword = async (req, res, next) => {
   res.status(201).json({ message: 'password changed successfully',token });
 };
 const protectRoutes = catchError(async (req, res, next) => {
+
   let user =await  User.findById(req.user.userId)
   if(!user) return showNotFound(next,'user')
   // seconds==>millie seconds ==> Date
@@ -58,7 +59,7 @@ const protectRoutes = catchError(async (req, res, next) => {
   next()
 
 });
-const allowedTo=(...roles)=>{
+const allowedTo=function(...roles){
 
  return catchError(async(req,res,next)=>{
    if(!roles.includes(req.user.role))

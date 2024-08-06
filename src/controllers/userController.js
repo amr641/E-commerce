@@ -12,7 +12,7 @@ const addUser = catchError(async (req, res) => {
 });
 // all categories
 const getAllUsers = catchError(async (req, res) => {
-  let users = await User.find()
+  let users = await User.find().populate('wishList')
   res.status(200).json({ message: "success", users });
 });
 // get single user

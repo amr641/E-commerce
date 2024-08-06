@@ -1,7 +1,9 @@
+import { AppError } from '../../../utils/appError.js';
 import showNotFound from '../../../utils/notFoundErrors.js';
 import Brand from '../../models/brandModel.js';
 import Category from '../../models/categoryModel.js';
 import Product from '../../models/productModel.js';
+import Review from '../../models/reviewModel.js';
 import { catchError } from '../catchErrors.js';
 
 const categoryExistence = catchError(async (req, res, next) => {
@@ -19,7 +21,24 @@ const brandExistence = catchError(async (req, res, next) => {
   brand || showNotFound(next, 'brand');
   !brand || next();
 });
-
-
+const checkReviewUniqueness = catchError(async (req, res, next) => {
+  const reviews = await Review.find({
+    $and: [{ user: req.user.userId }, { product: req.body.product }],
+  });
+  if (!reviews.length) return next();
+  next(new AppError('only one review can be added', 409));
+});
+const authReview =catchError(async(req,res,next)=>{
+  const review = await Review.findById(req.params.id);
+  if(!review) return showNotFound(next,'review')
+  if(req.user.userId !== review.user) return next(new AppError('you are not authorized',403))
+  next()
+})
 // --------------------------------------------
-export { categoryExistence, productExistence, brandExistence };
+export {
+  categoryExistence,
+  productExistence,
+  brandExistence,
+  checkReviewUniqueness,
+  authReview
+};

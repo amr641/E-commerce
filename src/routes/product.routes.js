@@ -14,10 +14,11 @@ import { verfifyToken } from '../middlewares/verifiyToken.js';
 
 const router = Router();
 router
-  .use(verfifyToken)
-  .use(protectRoutes)
+
   .post(
     '/',
+    verfifyToken,
+    protectRoutes,
     allowedTo(roles.USER),
     uploadMixOfFiles('products', [
       { name: 'imageCover', maxCount: 1 },

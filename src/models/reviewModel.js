@@ -4,7 +4,7 @@ const reviewSchema = new Schema(
   {
     comment: {
       type: String,
-      minLength: 10,
+      minLength: 5,
       maxLength: 1000,
       required: true,
     },
@@ -27,5 +27,9 @@ const reviewSchema = new Schema(
   },
   { versionKey: false, timestamps: false }
 );
+// reviewSchema.pre(/^find/,function(){
+//   this.populate('user')
+// })
+
 const Review = model("Review", reviewSchema);
 export default Review;

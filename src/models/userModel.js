@@ -23,7 +23,16 @@ const userSchema = new Schema(
     },
     passwordChangedTime:{
       type:Date
-    }
+    },
+    wishList:{
+      type:[Types.ObjectId],
+      ref:'Product'
+    },
+    addresses:[{
+      city:String,
+      phoneNumber:String,
+      street:String
+    }]
   },
   { timestamps: false }
 );
