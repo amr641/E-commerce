@@ -11,6 +11,7 @@ import wishListRouter from "../src/routes/wishList.routes.js";
 import addressRouter from "../src/routes/address.routes.js";
 import couponRouter from "../src/routes/coupon.routes.js";
 import cartRouter from "../src/routes/cart.routes.js";
+import orderRouter from "../src/routes/order.routes.js";
 
 const bootstrab = function (app) {
   let baseUrl = "/api/v1";
@@ -24,6 +25,7 @@ const bootstrab = function (app) {
   app.use(`${baseUrl}/wishLists`, wishListRouter);
   app.use(`${baseUrl}/addresses`, addressRouter);
   app.use(`${baseUrl}/coupons`, couponRouter);
+  app.use(`${baseUrl}/orders`, orderRouter);
   app.use(`${baseUrl}/carts`, cartRouter);
 
   app.use("*", (req, res, next) => {

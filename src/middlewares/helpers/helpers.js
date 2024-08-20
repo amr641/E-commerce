@@ -52,11 +52,32 @@ const calcTotalCartPrice = function (cart) {
   .map(ele=>totalPrice+=ele.qty*ele.price)
  cart.totalCartPrice =totalPrice
 //  ------------------------------
+if(cart.discount){
  let couponDiscount = cart.discount;
  cart.discount=cart.discount
  cart.totalPriceAfterDiscount =
    totalPrice - totalPrice * (couponDiscount / 100);
+}
 };
+const handelStockAndSold=  async(order)=>{
+ let quiery= order.orderItems.map( ele=>{
+    // let product = await Product.findById(ele.product)
+    // product.sold+=ele.qty;
+    // product.stock-=ele.qty
+    // await product.save()
+    return (
+      {
+      updateOne: { 
+        filter: { _id: ele.product }, 
+        update: { $inc:{sold:ele.qty,stock:-ele.qty}}, 
+    }
+    }
+    )
+  })
+  await Product.bulkWrite(quiery)
+  
+
+}
 // --------------------------------------------
 export {
   categoryExistence,
@@ -67,4 +88,5 @@ export {
   couponExistence,
   removeExpiredCoupons,
   calcTotalCartPrice,
+  handelStockAndSold
 };

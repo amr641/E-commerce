@@ -40,6 +40,7 @@ const addProductVal = joi.object({
             path: joi.string().required(),
           })
         ),
+        
   }),
   // 
   // 
@@ -47,6 +48,7 @@ const addProductVal = joi.object({
   stock:joi.number(),
   subCategory: joi.string().hex().length(24),
   createdBy: joi.string().hex(),
+  sold:joi.number()
 });
 const getAllProductsVal = joi.object({
   page: joi.number(),

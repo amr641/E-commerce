@@ -20,7 +20,7 @@ const logIn = catchError(async (req, res, next) => {
   if (!user || !bcrypt.compareSync(req.body.password, user.password))
     return next(new AppError('incorrect email or password', 401));
   let token = jwt.sign(
-    { userId: user._id, role: user.role },
+    { userId: user._id, role: user.role,name:user.name ,email:user.email},
     process.env.JWT_KEY
   );
   res.status(200).json({ message: 'logged in', token });
@@ -34,7 +34,7 @@ const changeUserPassword = async (req, res, next) => {
   req.body.newPassword = bcrypt.hashSync(req.body.newPassword, 8);
   // add the changed date
   let token = jwt.sign(
-    { userId: user._id, role: user.role },
+    { userId: user._id, role: user.role,name:user.name },
     process.env.JWT_KEY
   );
   // update and insert it into dataBase
