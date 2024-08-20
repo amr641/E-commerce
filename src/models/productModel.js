@@ -67,7 +67,7 @@ productSchema.pre(/^find/,function(){
   this.populate('reviews')
 })
 productSchema.post('init', function (doc) {
-  let url = 'http://localhost:3000/uploads/products/';
+  let url = process.env.BASE_URL+"products/";
   if (doc.imageCover) doc.imageCover = url + doc.imageCover;
   doc.images = doc.images?.map(image => url + image);
 });

@@ -3,9 +3,11 @@ import dotEnv from 'dotenv';
 import dbConn from './src/config/dbConfig.js';
 import bootstrab from './src/bootstrab.js';
 import fs from 'fs';
+import cors from 'cors'
 const app = express();
-const port = 3000;
+const port = process.env.PORT||3000;
 // body-parser
+app.use(cors())
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 dotEnv.config();

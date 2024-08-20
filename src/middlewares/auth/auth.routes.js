@@ -11,3 +11,5 @@ router
   .post('/login', validate(uv.logInVal), logIn)
   .post('/changePassword', verfifyToken, changeUserPassword);
 export default router;
+// user = e-commerce42
+// password = WtFtmnWSrcjbf36l
