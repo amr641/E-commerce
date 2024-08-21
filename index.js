@@ -18,6 +18,4 @@ if (!fs.existsSync('./uploads')) {
   fs.mkdirSync('./src/uploads');
   console.log('File created.');
 }
-
-app.get('/', (req, res) => res.send('Hello World!'));
 app.listen(port, () => console.log(`app listening on port ${port}!`));
