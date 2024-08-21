@@ -2,9 +2,9 @@
   "name": "e-commerce",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node index.js"
   },
   "type": "module",
   "keywords": [],
