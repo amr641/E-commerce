@@ -19,10 +19,6 @@ const logIn = catchError(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user || !bcrypt.compareSync(req.body.password, user.password))
     return next(new AppError('incorrect email or password', 401));
-  let token = jwt.sign(
-    { userId: user._id, role: user.role,name:user.name ,email:user.email},
-    process.env.JWT_KEY
-  );
   res.status(200).json({ message: 'logged in', token });
 });
 const changeUserPassword = async (req, res, next) => {

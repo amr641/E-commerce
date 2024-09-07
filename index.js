@@ -5,10 +5,11 @@ import bootstrab from './src/bootstrab.js';
 import fs from 'fs';
 import cors from 'cors'
 const app = express();
-const port = process.env.PORT||3000;
+const port = process.env.PORT||8080;
 // body-parser
 app.use(cors())
 app.use(express.json());
+// app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 dotEnv.config();
 

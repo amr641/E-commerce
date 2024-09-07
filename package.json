@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+     "build": "echo"
+
+
   },
   "type": "module",
   "keywords": [],
