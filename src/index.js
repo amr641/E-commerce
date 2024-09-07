@@ -1,10 +1,10 @@
 import express from 'express';
 import dotEnv from 'dotenv';
-import dbConn from './src/config/dbConfig.js';
-import bootstrab from './src/bootstrab.js';
+import dbConn from './config/dbConfig.js';
+import bootstrab from './bootstrab.js';
 import fs from 'fs';
 import cors from 'cors';
-import { catchError } from './src/middlewares/catchErrors.js';
+import { catchError } from './middlewares/catchErrors.js';
 import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPT_SECRET_KEY);
 
