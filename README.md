@@ -32,3 +32,6 @@ An E-commerce platform backend built with Node.js, Express, MongoDB, and other e
    ```bash
    git clone <repository-url>
    cd e-commerce
+
+   ## Documentation
+  **Postman Documentation**:https://documenter.getpostman.com/view/36174729/2sAY4si3rj
