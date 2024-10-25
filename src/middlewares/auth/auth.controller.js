@@ -51,7 +51,7 @@ const protectRoutes = catchError(async (req, res, next) => {
   // seconds==>millie seconds ==> Date
   const secondsToDate = seconds => new Date(seconds * 1000);
 
-  if(secondsToDate(req.user.iat)<user?.passwordChangedTime)return next(new AppError('expired toke..login again',409))
+  if(secondsToDate(req.user.iat)<user?.passwordChangedTime)return next(new AppError('expired token..login again',409))
   next()
 
 });

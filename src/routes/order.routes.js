@@ -17,4 +17,6 @@ router
   .get('/user',allowedTo(roles.USER),oc.getUserOrders)
   .get('/',allowedTo(roles.ADMIN),validate(ov.getAllOrderOfUserVal),oc.getAllOrderOfUser)
   .post('/checkout/:cartId',validate(ov.createCheckoutSessionVal),oc.createCheckoutSession)
+  .post(  '/api/webhook',
+  express.raw({ type: 'application/json' }),)
 export default router
