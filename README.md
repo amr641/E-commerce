@@ -1,29 +1,34 @@
 # E-commerce Platform
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)  
-An E-commerce platform built with Node.js, Express, MongoDB, and more. This project provides users with an end-to-end shopping experience, including product browsing, cart management, order processing, and more.
+An E-commerce platform backend built with Node.js, Express, MongoDB, and other essential libraries. This project provides APIs for user authentication, product management, shopping cart management, order processing, and payment handling.
 
 ## Features
 
-- **User Authentication**: Secure login and registration system.
-- **Product Management**: Admin panel to add, edit, delete, and manage products.
-- **Shopping Cart**: Persistent cart for users to manage selected items.
-- **Order Processing**: Order creation, status updates, and order history for users.
-- **Product Search and Filters**: Advanced search functionality with filtering options.
-- **Payment Integration**: Integrated payment gateway (e.g., Stripe/PayPal) for secure transactions.
-- **Responsive Design**: Optimized for both desktop and mobile use.
+- **User Authentication**: Secure login and registration.
+- **Product Management**: CRUD operations for products, including image uploads.
+- **Shopping Cart**: Allows users to manage items in their cart.
+- **Order Management**: Order creation and tracking.
+- **Payment Integration**: Integrated with Stripe for secure transactions.
+- **Data Validation**: Ensures input validity using Joi.
+- **Environment Variables**: Configured through dotenv for sensitive data management.
 
 ## Tech Stack
 
 - **Backend**: Node.js, Express.js
-- **Frontend**: HTML, CSS, JavaScript (or any frontend framework like React if used)
-- **Database**: MongoDB (or any other database used)
-- **Authentication**: JSON Web Tokens (JWT)
-- **Other**: Mongoose ORM for MongoDB, Bcrypt for password hashing
+- **Database**: MongoDB, with Mongoose for schema modeling
+- **Authentication**: JSON Web Tokens (JWT) for session handling
+- **File Uploads**: Managed with Multer for product images
+- **Payment**: Stripe API integration
+- **Other Utilities**:
+  - **bcrypt**: Password hashing
+  - **cors**: Cross-origin resource sharing
+  - **uuid**: Unique identifier generation
+  - **slugify**: URL-friendly slugs for products
+  - **joi-objectid**: ObjectId validation extension for Joi
 
 ## Installation
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/amr641/E-commerce.git
-   cd E-commerce
+   git clone <repository-url>
+   cd e-commerce
